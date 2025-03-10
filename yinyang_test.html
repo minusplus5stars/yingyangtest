@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>당신의 음양 밸런스는 몇 점?</title>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* 질문과 결과 텍스트 크기 키우기 */
+        h2 {
+            font-size: 24px;
+        }
+        p {
+            font-size: 18px;
+        }
+
+        /* 버튼 크기 조정 및 터치 반응 개선 */
+        button {
+            padding: 15px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            width: 90%;
+            max-width: 400px; /* 버튼 최대 너비 제한 */
+            display: block;
+            margin: 10px auto; /* 가운데 정렬 */
+            border-radius: 10px; /* 둥근 버튼 */
+            background-color: #007bff;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 선택한 버튼 강조 */
+        .selected {
+            background-color: #ffcc00 !important;
+            color: black;
+        }
+
+        /* 질문 숨김 처리 */
+        .question { display: none; }
+        .active { display: block; }
+        
+        /* 결과 컨테이너 */
+        #result-container { 
+            display: none; 
+            text-align: center; 
+            margin-top: 20px; 
+        }
+
+        /* 모바일 화면에서 더 보기 좋게 조정 */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            p {
+                font-size: 16px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>당신의 음양 밸런스 테스트</h2>
+
+    <div id="q1" class="question active">
+        <p>1. 당신의 하루 시작은?</p>
+        <button onclick="nextQuestion(1, 'yang', this)">일어나자마자 바로 활동!</button>
+        <button onclick="nextQuestion(1, 'yin', this)">천천히 움직이며 시작</button>
+    </div>
+
+    <div id="q2" class="question">
+        <p>2. 중요한 결정을 할 때?</p>
+        <button onclick="nextQuestion(2, 'yang', this)">직관적으로 빠르게</button>
+        <button onclick="nextQuestion(2, 'yin', this)">신중하게 오래 고민</button>
+    </div>
+
+    <div id="q3" class="question">
+        <p>3. 주말에 무엇을 하고 싶은가요?</p>
+        <button onclick="nextQuestion(3, 'yang', this)">사람들과 만나서 활동</button>
+        <button onclick="nextQuestion(3, 'yin', this)">집에서 혼자 쉬기</button>
+    </div>
+
+    <div id="q4" class="question">
+        <p>4. 감정을 표현하는 방식은?</p>
+        <button onclick="nextQuestion(4, 'yang', this)">즉각적으로 표현</button>
+        <button onclick="nextQuestion(4, 'yin', this)">속으로 곱씹고 천천히 표현</button>
+    </div>
+
+    <div id="q5" class="question">
+        <p>5. 목표를 세우면?</p>
+        <button onclick="nextQuestion(5, 'yang', this)">바로 실행에 옮긴다</button>
+        <button onclick="nextQuestion(5, 'yin', this)">충분히 준비한 후 시작</button>
+    </div>
+
+    <div id="q6" class="question">
+        <p>6. 주변 사람들과 어울릴 때?</p>
+        <button onclick="nextQuestion(6, 'yang', this)">새로운 사람들과 쉽게 친해짐</button>
+        <button onclick="nextQuestion(6, 'yin', this)">친한 사람들과만 어울림</button>
+    </div>
+
+    <div id="q7" class="question">
+        <p>7. 스트레스를 받을 때?</p>
+        <button onclick="nextQuestion(7, 'yang', this)">운동하거나 활동적으로 풀어냄</button>
+        <button onclick="nextQuestion(7, 'yin', this)">조용한 곳에서 혼자 정리함</button>
+    </div>
+
+    <div id="q8" class="question">
+        <p>8. 팀 프로젝트를 할 때?</p>
+        <button onclick="nextQuestion(8, 'yang', this)">리더 역할을 맡음</button>
+        <button onclick="nextQuestion(8, 'yin', this)">보조 역할을 맡음</button>
+    </div>
+
+    <div id="q9" class="question">
+        <p>9. 여행 스타일은?</p>
+        <button onclick="nextQuestion(9, 'yang', this)">즉흥적으로 떠남</button>
+        <button onclick="nextQuestion(9, 'yin', this)">계획을 꼼꼼히 세운 후 떠남</button>
+    </div>
+
+    <div id="q10" class="question">
+        <p>10. 새로운 도전을 앞두고 있을 때?</p>
+        <button onclick="showResult('yang', this)">두려움 없이 도전</button>
+        <button onclick="showResult('yin', this)">신중하게 준비 후 도전</button>
+    </div>
+
+    <div id="result-container">
+        <h3 id="result"></h3>
+        <p id="description"></p>
+    </div>
+
+    <script>
+        let yangScore = 0;
+        let yinScore = 0;
+
+        function nextQuestion(current, type, button) {
+            if (type === 'yang') {
+                yangScore++;
+            } else {
+                yinScore++;
+            }
+
+            // 선택한 버튼 색상 변경
+            button.classList.add("selected");
+
+            setTimeout(() => {
+                document.getElementById('q' + current).classList.remove('active');
+                document.getElementById('q' + (current + 1)).classList.add('active');
+            }, 300);
+        }
+
+        function showResult(type, button) {
+            if (type === 'yang') {
+                yangScore++;
+            } else {
+                yinScore++;
+            }
+
+            button.classList.add("selected");
+
+            let balance = (yangScore / 10) * 100;
+            let resultText = `당신의 음양 밸런스는 ${balance.toFixed(1)}% 양(陽) 기운입니다!`;
+            let description = "";
+
+            if (balance > 90) {
+                resultText = "☀️ 태양의 전사!";
+                description = "당신은 에너지가 넘치는 리더! 도전과 변화를 즐기는 타입이에요.";
+            } else if (balance > 70) {
+                resultText = "🔥 활화산!";
+                description = "행동력이 강하고 즉각적인 성격, 주도적인 추진력이 돋보이는 타입이에요.";
+            } else if (balance > 50) {
+                resultText = "🌿 균형잡힌 바람";
+                description = "음양 조화가 잘 맞고, 상황에 따라 유연하게 적응하는 타입이에요.";
+            } else if (balance > 30) {
+                resultText = "🌙 밤의 사색가";
+                description = "신중하고 내면의 깊이가 있는 철학적 성향을 가진 타입이에요.";
+            } else {
+                resultText = "❄️ 얼음의 성자";
+                description = "감성적이고 차분하며 깊이 있는 내면을 가진 타입이에요.";
+            }
+
+            document.getElementById("result").innerHTML = resultText;
+            document.getElementById("description").innerHTML = description;
+            document.getElementById("result-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>
