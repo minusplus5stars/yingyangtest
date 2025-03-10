@@ -3,7 +3,6 @@
 <head>
     <title>당신의 음양 밸런스는 몇 점?</title>
     <style>
-        /* 기본 스타일 */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -11,70 +10,48 @@
             margin: 0;
             padding: 20px;
         }
-
-        /* 질문과 결과 텍스트 크기 키우기 */
         h2 {
-            font-size: 28px; /* 제목 글씨 키움 */
+            font-size: 28px;
             font-weight: bold;
         }
         p {
-            font-size: 22px; /* 일반 텍스트 크기 증가 */
+            font-size: 22px;
         }
-
-        /* 버튼 크기 조정 및 터치 반응 개선 */
         button {
-            padding: 20px 25px; /* 버튼 패딩 증가 */
+            padding: 20px 25px;
             margin: 15px;
             border: none;
             cursor: pointer;
-            font-size: 22px; /* 버튼 글씨 크기 증가 */
+            font-size: 22px;
             width: 95%;
-            max-width: 450px; /* 버튼 최대 너비 제한 */
+            max-width: 450px;
             display: block;
             margin: 15px auto;
-            border-radius: 12px; /* 둥근 버튼 */
+            border-radius: 12px;
             background-color: #007bff;
             color: white;
             transition: background 0.3s, transform 0.1s;
         }
-
-        /* 버튼 클릭 효과 */
         button:active {
             transform: scale(0.98);
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
-        /* 선택한 버튼 강조 */
         .selected {
             background-color: #ffcc00 !important;
             color: black;
         }
-
-        /* 결과 컨테이너 */
+        .question {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
         #result-container {
             display: none;
             text-align: center;
             margin-top: 30px;
-        }
-
-        /* 모바일 화면에서 더 크게 표시 */
-        @media screen and (max-width: 600px) {
-            body {
-                padding: 15px;
-            }
-            h2 {
-                font-size: 32px; /* 모바일에서 제목 크기 더 크게 */
-            }
-            p {
-                font-size: 24px; /* 질문 글씨 크기 더 증가 */
-            }
-            button {
-                font-size: 24px; /* 모바일에서 버튼 글씨 키우기 */
-                padding: 18px; /* 버튼 터치 영역 확대 */
-            }
         }
     </style>
 </head>
@@ -187,6 +164,9 @@
             } else if (balance > 50) {
                 resultText = "🌿 균형잡힌 바람";
                 description = "음양 조화가 잘 맞고, 상황에 따라 유연하게 적응하는 타입이에요.";
+            } else if (balance > 30) {
+                resultText = "🌙 밤의 사색가";
+                description = "신중하고 내면의 깊이가 있는 철학적 성향을 가진 타입이에요.";
             } else {
                 resultText = "❄️ 얼음의 성자";
                 description = "감성적이고 차분하며 깊이 있는 내면을 가진 타입이에요.";
@@ -195,6 +175,10 @@
             document.getElementById("result").innerHTML = resultText;
             document.getElementById("description").innerHTML = description;
             document.getElementById("result-container").style.display = "block";
+
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById('q' + i).classList.remove('active');
+            }
         }
     </script>
 </body>
